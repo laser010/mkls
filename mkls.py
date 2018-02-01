@@ -2,6 +2,8 @@ import itertools
 from array import array
 import string
 import sys
+import argparse
+
 
 print("""
 
@@ -16,26 +18,25 @@ print("""
 :::     ::    ::  :::   :: ::::  :::: ::
  :      :     :   :::  : :: : :  :: : :
 
-Programmed by https://www.instagram.com/laser01/  Version 1.0.0
+Programmed by laser010  Version 1.0.0
 
 """)
 
 def main():
 	try:
-		chr_num_sym = input('\nEnter characters/numbers/symbols... : ')
-		mattresses = input('Enter how many number of mattresses : ')
-
+		parser = argparse.ArgumentParser(prog="sniper-h.py", add_help=True, usage=(
+		"python mkls.py [-W characters_numbers_symbols] [-M mattresses] [-O save\show outpot]"))
+		parser.add_argument("-W", dest="characters_numbers_symbols", required=True, help=": [-CNS] characters/numbers/symbols values")
+		parser.add_argument("-M", dest="mattresses", required=True, help=": [-W] path word list")
+		parser.add_argument("-O", dest="output_save_show", required=True, help=": [-O] save/show outpot",
+		choices=["save","show"])
+		args = parser.parse_args()
 		def order():
-			print("\n(1) Save outpot in wordlist.txt .\n(2) Show them on terminal .\n(99) exit")
-
-			order = input('\nmkls > ')
-			if order == "99" :
-				exit()
-
-			elif order == "1" :
+			
+			if args.output_save_show == "save" :
 				output = open("wordlist.txt", "w")
 				sys.stdout = output
-				for wl in itertools.product(chr_num_sym, repeat=int(mattresses)):
+				for wl in itertools.product(args.characters_numbers_symbols, repeat=int(args.mattresses)):
 					try:
 						op = ''.join(wl)
 					except AttributeError:
@@ -43,8 +44,8 @@ def main():
 					print(op)
 				output.close
 
-			elif order == "2" :
-				for wl in itertools.product(chr_num_sym, repeat=int(mattresses)):
+			elif args.output_save_show == "show" :
+				for wl in itertools.product(args.characters_numbers_symbols, repeat=int(args.mattresses)):
 					try:
 						op = ''.join(wl)
 					except AttributeError:
